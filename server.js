@@ -1,17 +1,30 @@
-// Load the net module to create a tcp server.
-var net = require('net');
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
-// Creates a new TCP server. The handler argument is automatically set as a listener for the 'connection' event
-var server = net.createServer(function (socket) {
+var WebSocketServer = require('ws').Server
+var http = require('http');
 
-  // Every time someone connects, tell them hello and then close the connection.
-  console.log("Connection from " + socket.remoteAddress);
-  socket.end("Hello World\n");
-
+var server = http.createServer(function(request, response) {
+    console.log((new Date()) + ' Received request for ' + request.url);
+	response.writeHead(200, {'Content-Type': 'text/plain'});
+	  response.write("Welcome to Node.js on OpenShift!\n\n");
+	  response.end("Thanks for visiting us! \n");
 });
 
-// Fire up the server bound to port 7000 on localhost
-server.listen(8000, "localhost");
+server.listen( port, ipaddress, function() {
+    console.log((new Date()) + ' Server is listening on port 8080');
+});
 
-// Put a friendly message on the terminal
-console.log("TCP server listening on port 7000 at localhost.");
+wss = new WebSocketServer({
+    server: server,
+    autoAcceptConnections: false
+});
+wss.on('connection', function(ws) {
+  console.log("New connection");
+  ws.on('message', function(message) {
+    ws.send("Received: " + message);
+  });
+  ws.send('Welcome!');
+});
+
+console.log("Listening to " + ipaddress + ":" + port + "...");
