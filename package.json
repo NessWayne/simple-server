@@ -1,4 +1,4 @@
 "scripts": {
-  "start": "node server.js"
+  "start": "node jsvr.js"
 },
-"main": "server.js"
+"main": "jsvr.js"
