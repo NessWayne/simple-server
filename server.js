@@ -1,5 +1,5 @@
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
-var port      = process.env.OPENSHIFT_NODEJS_PORT || 80;
+var port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
 net = require('net');
 var StringDecoder = require('string_decoder').StringDecoder;
@@ -92,6 +92,6 @@ net.createServer(function (socket) {
         });
    }
    
-}).listen(port,ipaddress);
+}).listen(8000,"127.0.0.1");
 
 console.log("Server Activo");
