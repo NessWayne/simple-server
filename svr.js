@@ -89,6 +89,6 @@ net.createServer(function (socket) {
         });
    }
    
-}).listen(8000);
+}).listen(80);
 
 console.log("Server Activo");
